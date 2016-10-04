@@ -15,7 +15,7 @@ using TShockAPI.Hooks;
 
 namespace PvPToggle
 {
-    [ApiVersion(1, 23)]
+    [ApiVersion(1, 25)]
     public class PvpToggle : TerrariaPlugin
     {
         public static readonly List<Player> PvPplayer = new List<Player>();
@@ -28,7 +28,7 @@ namespace PvPToggle
         }
         public override string Author
         {
-            get { return "Zaicon"; }
+            get { return "Maintained by Zaicon"; }
         }
         public override string Name
         {
