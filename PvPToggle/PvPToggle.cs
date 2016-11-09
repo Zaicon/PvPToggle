@@ -424,6 +424,12 @@ namespace PvPToggle
 		public bool ForcePvPOnBloodMoon;
 		public string[] antiPvPRegions;
 
+		public PvPConfig()
+		{
+			ForcePvPOnBloodMoon = false;
+			antiPvPRegions = new string[0];
+		}
+
 		public void Write(string path)
 		{
 			File.WriteAllText(path, JsonConvert.SerializeObject(this, Formatting.Indented));
