@@ -15,7 +15,7 @@ using TShockAPI.Hooks;
 
 namespace PvPToggle
 {
-    [ApiVersion(1, 25)]
+    [ApiVersion(1, 26)]
     public class PvpToggle : TerrariaPlugin
     {
         public static readonly List<Player> PvPplayer = new List<Player>();
