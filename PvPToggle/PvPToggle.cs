@@ -12,10 +12,11 @@ using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
 using TShockAPI.Hooks;
+using Terraria.Localization;
 
 namespace PvPToggle
 {
-    [ApiVersion(1, 26)]
+    [ApiVersion(2, 1)]
     public class PvpToggle : TerrariaPlugin
     {
         public static readonly List<Player> PvPplayer = new List<Player>();
@@ -101,7 +102,7 @@ namespace PvPToggle
 					{
 						Main.player[player.Index].hostile = false;
 						plr.SendWarningMessage("You are in a no-PvP zone.");
-						NetMessage.SendData((int)PacketTypes.TogglePvp, -1, -1, "", player.Index);
+						NetMessage.SendData((int)PacketTypes.TogglePvp, -1, -1, NetworkText.Empty, player.Index);
 						return;
 					}
 						
@@ -110,7 +111,7 @@ namespace PvPToggle
                         case "forceon":
                             if (Main.player[player.Index].hostile) continue;
                             Main.player[player.Index].hostile = true;
-                            NetMessage.SendData((int) PacketTypes.TogglePvp, -1, -1, "", player.Index);
+                            NetMessage.SendData((int) PacketTypes.TogglePvp, -1, -1, NetworkText.Empty, player.Index);
                             player.TSPlayer.SendWarningMessage("Your PvP has been forced on, don't try and turn it off!");
                             break;
                         case "bloodmoon":
@@ -119,7 +120,7 @@ namespace PvPToggle
                                 if (Main.player[player.Index].hostile == false)
                                 {
                                     Main.player[player.Index].hostile = true;
-                                    NetMessage.SendData((int) PacketTypes.TogglePvp, -1, -1, "", player.Index);
+                                    NetMessage.SendData((int) PacketTypes.TogglePvp, -1, -1, NetworkText.Empty, player.Index);
                                     player.TSPlayer.SendWarningMessage(
                                         "The blood moon's evil influence stops your PvP from turning off.");
                                 }
@@ -143,7 +144,7 @@ namespace PvPToggle
                 if (Main.player[ply.Index].hostile == false)
                 {
                     Main.player[ply.Index].hostile = true;
-                    NetMessage.SendData((int)PacketTypes.TogglePvp, -1, -1, "", ply.Index);
+                    NetMessage.SendData((int)PacketTypes.TogglePvp, -1, -1, NetworkText.Empty, ply.Index);
                 }
                 ply.TSPlayer.SendInfoMessage("Your PvP has been forced on for the blood moon!");
             }
@@ -187,13 +188,13 @@ namespace PvPToggle
             if (!Main.player[args.Player.Index].hostile)
             {
                 Main.player[args.Player.Index].hostile = true;
-                NetMessage.SendData((int) PacketTypes.TogglePvp, -1, -1, "", args.Player.Index);
+                NetMessage.SendData((int) PacketTypes.TogglePvp, -1, -1, NetworkText.Empty, args.Player.Index);
                 args.Player.SendSuccessMessage("Your PvP is now enabled.");
             }
             else if (Main.player[args.Player.Index].hostile)
             {
                 Main.player[args.Player.Index].hostile = false;
-                NetMessage.SendData((int) PacketTypes.TogglePvp, -1, -1, "", args.Player.Index);
+                NetMessage.SendData((int) PacketTypes.TogglePvp, -1, -1, NetworkText.Empty, args.Player.Index);
                 args.Player.SendSuccessMessage("Your PvP is now disabled.");
             }
         }
@@ -230,7 +231,7 @@ namespace PvPToggle
                     if (!Main.player[player.Index].hostile)
                     {
                         Main.player[player.Index].hostile = true;
-                        NetMessage.SendData((int)PacketTypes.TogglePvp, -1, -1, "", player.Index);
+                        NetMessage.SendData((int)PacketTypes.TogglePvp, -1, -1, NetworkText.Empty, player.Index);
                         args.Player.SendSuccessMessage($"You have turned {player.Name}'s PvP on!");
                         if (!args.Silent)
                             player.SendInfoMessage($"{args.Player.Name} has turned your PvP on!");
@@ -241,7 +242,7 @@ namespace PvPToggle
                     else if (Main.player[player.Index].hostile)
                     {
                         Main.player[player.Index].hostile = false;
-                        NetMessage.SendData((int)PacketTypes.TogglePvp, -1, -1, "", player.Index);
+                        NetMessage.SendData((int)PacketTypes.TogglePvp, -1, -1, NetworkText.Empty, player.Index);
 
                         args.Player.SendInfoMessage($"You have turned {player.Name}'s PvP off!");
                         if (!args.Silent)
@@ -271,9 +272,9 @@ namespace PvPToggle
             if (TeamColors.Contains(team.ToLower()))
             {
 				args.Player.TPlayer.team = TeamColors.IndexOf(team);
-				NetMessage.SendData((int)PacketTypes.PlayerTeam, -1, -1, "", args.Player.Index);
+				NetMessage.SendData((int)PacketTypes.PlayerTeam, -1, -1, NetworkText.Empty, args.Player.Index);
 				args.Player.SendData(PacketTypes.PlayerTeam, "", args.Player.Index);
-                NetMessage.SendData((int) PacketTypes.PlayerTeam, -1, -1, "", args.Player.Index);
+                NetMessage.SendData((int) PacketTypes.PlayerTeam, -1, -1, NetworkText.Empty, args.Player.Index);
                 args.Player.SendSuccessMessage($"Joined the {team} team!");
             }
             else
@@ -307,7 +308,7 @@ namespace PvPToggle
             if (TeamColors.Contains(team.ToLower()))
 			{
 				foundplr[0].TPlayer.team = TeamColors.IndexOf(team);
-				NetMessage.SendData((int)PacketTypes.PlayerTeam, -1, -1, "", foundplr[0].Index);
+				NetMessage.SendData((int)PacketTypes.PlayerTeam, -1, -1, NetworkText.Empty, foundplr[0].Index);
 				foundplr[0].SendData(PacketTypes.PlayerTeam, "", foundplr[0].Index);
                 if (!args.Silent)
                     foundplr[0].SendInfoMessage($"{args.Player.Name} changed you to the {team} team!");
@@ -386,7 +387,7 @@ namespace PvPToggle
                 {
                     player.PvPType = "forceon";
                     Main.player[plr.Index].hostile = true;
-                    NetMessage.SendData((int)PacketTypes.TogglePvp, -1, -1, "", plr.Index, 0f, 0f, 0f);
+                    NetMessage.SendData((int)PacketTypes.TogglePvp, -1, -1, NetworkText.Empty, plr.Index, 0f, 0f, 0f);
                     if (!args.Silent)
                         plr.SendInfoMessage($"{args.Player.Name} has forced your PvP on!");
                     args.Player.SendSuccessMessage($"You have forced {player.PlayerName}'s PvP on!");
@@ -397,7 +398,7 @@ namespace PvPToggle
                 {
                     player.PvPType = "";
                     Main.player[plr.Index].hostile = false;
-                    NetMessage.SendData((int)PacketTypes.TogglePvp, -1, -1, "", plr.Index, 0f, 0f, 0f);
+                    NetMessage.SendData((int)PacketTypes.TogglePvp, -1, -1, NetworkText.Empty, plr.Index, 0f, 0f, 0f);
                     if (!args.Silent)
                         plr.SendInfoMessage($"{args.Player.Name} has turned your PvP off!");
                     args.Player.SendInfoMessage($"You have turned {player.PlayerName}'s PvP off!");
